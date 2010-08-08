@@ -8,6 +8,7 @@ Currently requires that you're using Raphael.js cutting-edge. Supports Rahpael 1
 
   - x
   - y
+  - rotation (only w/ a single value)
 
 # Examples
 
