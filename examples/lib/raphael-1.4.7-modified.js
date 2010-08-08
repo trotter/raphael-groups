@@ -3511,5 +3511,6 @@ Raphael = (function () {
         return R;
     };
     R.el = Element[proto];
+    R.st = Set[proto]
     return R;
 })();
