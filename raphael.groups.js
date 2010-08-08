@@ -43,10 +43,18 @@
     var relativeAttrs = function (item, attrs, box) {
       var tmp = cloneObject(attrs);
       if (tmp.x) {
-        tmp.x += offsetX(item, box);
+          tmp.x += offsetX(item, box);
       }
       if (tmp.y) {
-        tmp.y += offsetY(item, box);
+          tmp.y += offsetY(item, box);
+      }
+      if (tmp.rotation) {
+        if (R.is(tmp.rotation, array) || R.is(tmp.rotation, "object")) {
+          // Don't handle an array yet
+        } else {
+          var center = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+          tmp.rotation = [tmp.rotation, center.x, center.y];
+        }
       }
       return tmp;
     }
