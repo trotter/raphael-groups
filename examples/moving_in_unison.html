@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Moving in unison</title>
+    <style>
+      #paper {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="paper">
+    </div>
+
+    <script type="text/javascript" src="../javascripts/raphael-cutting-edge.js"></script>
+    <script type="text/javascript" src="../javascripts/raphael.groups.js"></script>
+
+    <script type="text/javascript">
+      var r = Raphael("paper"),
+          group = r.group();
+
+      group.push(r.rect(10, 10, 20, 20));
+      group.push(r.rect(30, 30, 20, 20));
+
+      group.attr({x: 40, y: 40});
+
+      function back () {
+        group.animate({x: 100, y: 100}, 1000, andForth);
+      }
+
+      function andForth() {
+        group.animate({x: 40,  y: 40 }, 1000, back);
+      }
+      
+      back();
+    </script>
+  </body>
+</html>
