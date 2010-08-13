@@ -21,7 +21,7 @@ Raphael = (function () {
     }
     R.version = "1.5.0";
     var separator = /[, ]+/,
-        elements = /^(circle|rect|path|ellipse|text|image)$/,
+        elements = /^(circle|rect|path|ellipse|text|image|group)$/,
         proto = "prototype",
         has = "hasOwnProperty",
         doc = document,
@@ -1720,6 +1720,28 @@ Raphael = (function () {
             res.type = "image";
             return res;
         };
+        var theGroup = function (svg) {
+            var el = $("g");
+            var childSvg = $("svg");
+            svg.canvas && svg.canvas[appendChild](el);
+            el[appendChild](childSvg);
+            var group = new Element(el, svg);
+            var otherSvg = new Element(childSvg, svg);
+            otherSvg.type = "svg";
+            group.type = "g";
+            group.push = function (child) {
+              otherSvg.node[appendChild](child.node);
+            }
+            group.node.oldSetAttribute = group.node[setAttribute];
+            group.node[setAttribute] = function(attr, val) {
+              if (attr === 'x' || attr === 'y') {
+                otherSvg.node.setAttribute(attr, val);
+              } else {
+                this.oldSetAttribute(attr, val);
+              }
+            }
+            return group;
+        };
         var theText = function (svg, x, y, text) {
             var el = $("text");
             $(el, {x: x, y: y, "text-anchor": "middle"});
@@ -2519,6 +2541,9 @@ Raphael = (function () {
             vml.canvas[appendChild](g);
             return res;
         };
+        theGroup = function (vml) {
+          throw "Group is not implemented in VML."
+        };
         setSize = function (width, height) {
             var cs = this.canvas.style;
             width == +width && (width += "px");
@@ -2776,6 +2801,9 @@ Raphael = (function () {
     Paper[proto].text = function (x, y, text) {
         return theText(this, x || 0, y || 0, Str(text));
     };
+    Paper[proto].group = function () {
+      return theGroup(this);
+    }
     Paper[proto].set = function (itemsArray) {
         arguments[length] > 1 && (itemsArray = Array[proto].splice.call(arguments, 0, arguments[length]));
         return new Set(itemsArray);

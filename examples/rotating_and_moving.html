@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Rotation</title>
+    <title>Moving in unison</title>
     <style>
       #paper {
         width: 100%;
@@ -9,7 +9,6 @@
     </style>
   </head>
   <body>
-    <p>Don't worry, it's supposed to be jerky. Check out the code.</p>
     <div id="paper">
     </div>
 
@@ -23,16 +22,17 @@
       group.push(r.rect(110, 110, 20, 20));
       group.push(r.rect(130, 130, 20, 20));
 
-      function rotateWithAnimate () {
-        group.animate({rotation: rotation}, 1000, rotateWithFunction);
+      function back () {
+        group.animate({x: 210, y: 210, rotation: rotation}, 1000, andForth);
+        rotation += 90;
       }
 
-      function rotateWithFunction () {
-        group.rotate(rotation);
-        rotateWithAnimate();
+      function andForth() {
+        group.animate({x: 130,  y: 130, rotation: rotation}, 1000, back);
+        rotation += 90;
       }
-
-      rotateWithAnimate();
+      
+      back();
     </script>
   </body>
 </html>
